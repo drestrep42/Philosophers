@@ -28,15 +28,15 @@ typedef struct s_philo
 {
 	struct s_philo	*next_philo;
 	pthread_mutex_t	fork_mutex;
-	pthread_t		thread;
-	int				philo_nbr;
+	pthread_t		th;
+	int				id;
 	int				fork;
 	int				dead;
 }				t_philo;
 
 typedef struct s_table
 {
-	t_philo			philo;
+	t_philo			*philo;
 	int				timeofday;
 	int				time2die;
 	int				time2eat;
