@@ -26,25 +26,26 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 typedef struct s_philo
 {
-	struct s_philo	*next_philo;
-	pthread_mutex_t	fork_mutex;
+	pthread_mutex_t	left_fork_mutex;
+	pthread_mutex_t	right_fork_mutex;
 	pthread_t		th;
+	int				left_fork;
+	int				right_fork;
 	int				id;
 	int				fork;
 	int				dead;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				times_must_eat;
 }				t_philo;
 
 typedef struct s_table
 {
 	t_philo			*philo;
-	int				timeofday;
-	int				time2die;
-	int				time2eat;
-	int				time2sleep;
-	int				times_must_eat;
 	int				num_of_philos;
 }				t_table;
 
 int		parsing(char **argv);
 int		ft_atoi(const char *str);
-void	initialize_values(t_table *table, char **argv);
+void	values_init(t_table *table, char **argv);

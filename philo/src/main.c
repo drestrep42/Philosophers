@@ -12,44 +12,45 @@
 
 #include "../inc/philo.h"
 
+int	get_time()
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
 void	*eat_think_sleep(void *arg)
 {
-	t_philo			*philo;
-	struct timeval	time;
-	
+	t_philo	*philo;
+	int		start;
+	int		current_time;
+
 	philo = (t_philo *)arg;
-	gettimeofday(&time, NULL);
-	printf("%ld\n", time.tv_sec * 1000 + time.tv_usec / 1000);
-	exit(0);
-	printf("Philo %d started to eat with one fork\n", philo->id);
-	usleep(1000000);
-	printf("Philo %d finished eating\n", philo->id);
+	start = get_time();
+	(void)philo;
+	current_time = get_time();
+	printf("%d %d has taken a fork\n", current_time - start, philo->id);
 	return (NULL);
 }
 
-void	*nothing(void *arg)
-{
-	(void) arg;
-	return (NULL);
-}
 
-void	initialize_threads(t_table *table)
+//	TODO: Fix mutexes problem
+
+void	threads_init(t_table *table)
 {
 	int	i;
-		
+
 	i = -1;
-	table->philo = malloc(sizeof(t_philo) * table->num_of_philos);
-	if (!table->philo)
-		return ;
 	while (++i < table->num_of_philos)
 	{
-		pthread_mutex_init(&table->philo[i].fork_mutex, NULL);
-		table->philo[i].id = i + 1;
+		pthread_mutex_init(&table->philo[i].left_fork_mutex, NULL);
+		pthread_mutex_init(&table->philo[i].right_fork_mutex, NULL);
 	}
 	i = -1;
 	while (++i < table->num_of_philos)
 	{
-		table->philo[i].id = i;
+		table->philo[i].id = i + 1;
 		if (pthread_create(&table->philo[i].th, \
 		NULL, &eat_think_sleep, (void *)&table->philo[i]) != 0)
 			return ;
@@ -60,7 +61,6 @@ void	initialize_threads(t_table *table)
 		if (pthread_join(table->philo[i].th, NULL) != 0)
 			return ;
 	}
-	pthread_mutex_destroy(&table->philo->fork_mutex);
 	free(table->philo);
 }
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 		printf(PARSING_ERROR);
 		return (1);
 	}
-	initialize_values(&table, argv);
-	initialize_threads(&table);
+	values_init(&table, argv);
+	threads_init(&table);
 	return (0);
 }
