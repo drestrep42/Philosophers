@@ -12,58 +12,44 @@
 
 #include "../inc/philo.h"
 
-void	*eat_think_sleep(void *arg)
+void	simulation(t_table *table)
 {
-	t_philo			*philo;
-	struct timeval	time;
-	
-	philo = (t_philo *)arg;
-	(void)philo;
-	gettimeofday(&time, NULL);
-	printf("%ld\n", time.tv_sec * 1000 + time.tv_usec / 1000);
-	printf("Philo %d started to eat with one fork\n", philo->philo_nbr);
-	usleep(1000000);
-	//printf("Philo finished eating\n");
-	return (NULL);
-}
-
-void	initialize_threads(char **argv)
-{
-	t_philo *philo;
 	int	i;
-	philo = malloc(ft_atoi(argv[1]) * sizeof(t_philo));
-		
-	i = 1;
-	while (i <= ft_atoi(argv[1]))
-	{
-		printf("Hola\n");
-		philo->philo_nbr = i;
-		printf("%d\n", philo->philo_nbr);
-		exit(0);
-		pthread_create(&philo->thread, NULL, eat_think_sleep, &philo);
-		pthread_join(philo->thread, NULL);
-		philo = philo->next_philo;
-		i++;
-	}
-}
 
+	i = -1;
+	table->start = get_time();
+	if (table->nbr_meals == 0)
+		return ;
+	else
+	{
+		while (++i < table->num_of_philos)
+		{
+			pthread_create(&table->philo[i].th, NULL, 
+			&eat_think_sleep, (void *)(&table->philo[i]));
+			usleep(10);
+		}
+	}
+	i = -1;
+	while (++i < table->num_of_philos)
+		pthread_join(table->philo[i].th, NULL);
+}
+ 
 int	main(int argc, char **argv)
 {
 	t_table	table;
 
-	if (argc != 5 && argc != 6)
+	if (argc == 5 || argc == 6)
 	{
-		printf(ERROR_USAGE);
-		return (1);
+		if (!parsing(argv))
+		{
+			printf(PARSING_ERROR);
+			return (1);
+		}
+		if (data_init(&table, argv) == -1)
+			return (1);
+		simulation(&table);
+		return (0);
 	}
-	if (!parsing(argv))
-	{
-		printf(PARSING_ERROR);
-		return (1);
-	}
-	initialize_values(&table, argv);
-	initialize_threads(argv);
-	//pthread_create(&table.philo.thread, NULL, eat_think_sleep, &philo);
-	//pthread_join(philo.thread, NULL);
-	return (0);
+	printf(USAGE_ERROR);
+	return (1);
 }

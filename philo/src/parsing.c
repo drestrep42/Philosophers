@@ -46,4 +46,3 @@ int	parsing(char **argv)
 	}
 	return (1);
 }
-

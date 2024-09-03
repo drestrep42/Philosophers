@@ -13,7 +13,7 @@
 NAME 			= 		philo
 
 CC 				= 		gcc
-CFLAGS 			= 		-g3 -Wall -Wextra -Werror #-O3
+CFLAGS 			= 		-g3 -Wall -Wextra -Werror #-fsanitize=address#-O3
 
 SRC_DIR			=		src
 SRCS			=		$(wildcard	src/*.c)
