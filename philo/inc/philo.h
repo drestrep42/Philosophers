@@ -41,6 +41,7 @@ typedef struct	s_fork
 
 typedef struct s_philo
 {
+<<<<<<< HEAD
 	struct s_table	*table;
 	pthread_t		th;
 	t_fork			left_fork;
@@ -50,10 +51,25 @@ typedef struct s_philo
 	int				full;
 	int				last_meal;
 	int				meals_eaten;
+=======
+	pthread_mutex_t	left_fork_mutex;
+	pthread_mutex_t	right_fork_mutex;
+	pthread_t		th;
+	int				left_fork;
+	int				right_fork;
+	int				id;
+	int				fork;
+	int				dead;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				times_must_eat;
+>>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
 }				t_philo;
 
 typedef struct s_table
 {
+<<<<<<< HEAD
 	pthread_mutex_t	write;
 	t_philo			*philo;
 	t_fork			*fork;
@@ -65,12 +81,17 @@ typedef struct s_table
 	int				time2sleep;
 	int				nbr_meals;
 	int				timeofday;
+=======
+	t_philo			*philo;
+	int				num_of_philos;
+>>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
 }				t_table;
 
 
 //PARSING
 int		parsing(char **argv);
 int		ft_atoi(const char *str);
+<<<<<<< HEAD
 
 //DATA INIT
 int		data_init(t_table *table, char **argv);
@@ -88,3 +109,6 @@ void	*eat_think_sleep(void *arg);
 void	*ft_think();
 void	*ft_sleep();
 void	*ft_eat(t_philo *philo);
+=======
+void	values_init(t_table *table, char **argv);
+>>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
