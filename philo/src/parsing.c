@@ -12,7 +12,7 @@
 
 #include "../inc/philo.h"
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	double	res;
 	int		i;
@@ -39,7 +39,7 @@ int	parsing(char **argv)
 	argv++;
 	while (argv && *argv)
 	{
-		if(ft_atoi(*argv) <= 0 && i != 4)
+		if (ft_atoi(*argv) <= 0)
 			return (0);
 		argv++;
 		i++;

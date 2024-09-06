@@ -22,10 +22,12 @@
 #define USAGE_ERROR "Correct use: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
-#define PARSING_ERROR "All mandatory arguments should be numbers above 0"
+#define PARSING_ERROR "All arguments should be numbers above 0\n"
 
 
 #define FORK "has taken a fork"
+#define LEFT_FORK "has taken the left fork"
+#define RIGHT_FORK "has taken the right fork"
 #define EATING "is eating"
 #define SLEEPING "is sleeping"
 #define THINKING "is thinking"
@@ -41,38 +43,29 @@ typedef struct	s_fork
 
 typedef struct s_philo
 {
-<<<<<<< HEAD
 	struct s_table	*table;
+	pthread_mutex_t	philo_mtx;
 	pthread_t		th;
-	t_fork			left_fork;
-	t_fork			right_fork;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
 	int				id;
+	int				eating;
 	int				dead;
 	int				full;
 	int				last_meal;
 	int				meals_eaten;
-=======
-	pthread_mutex_t	left_fork_mutex;
-	pthread_mutex_t	right_fork_mutex;
-	pthread_t		th;
-	int				left_fork;
-	int				right_fork;
-	int				id;
-	int				fork;
-	int				dead;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
-	int				times_must_eat;
->>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
 }				t_philo;
 
 typedef struct s_table
 {
-<<<<<<< HEAD
 	pthread_mutex_t	write;
+	pthread_mutex_t	eating_mtx;
+	pthread_mutex_t	death_mtx;
+	pthread_t		executioner;
 	t_philo			*philo;
 	t_fork			*fork;
+	int				full_philos;
+	int				all_full;
 	int				start;
 	int				current_time;
 	int				num_of_philos;
@@ -81,17 +74,13 @@ typedef struct s_table
 	int				time2sleep;
 	int				nbr_meals;
 	int				timeofday;
-=======
-	t_philo			*philo;
-	int				num_of_philos;
->>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
+	int				death;
 }				t_table;
 
 
 //PARSING
 int		parsing(char **argv);
 int		ft_atoi(const char *str);
-<<<<<<< HEAD
 
 //DATA INIT
 int		data_init(t_table *table, char **argv);
@@ -106,9 +95,13 @@ int		get_time(void);
 
 // ROUTINE
 void	*eat_think_sleep(void *arg);
-void	*ft_think();
-void	*ft_sleep();
+void	*ft_think(t_philo *philo);
+void	*ft_sleep(t_philo *philo);
 void	*ft_eat(t_philo *philo);
-=======
-void	values_init(t_table *table, char **argv);
->>>>>>> a2dd4b22f468872a7b2a26d079ae3b09cd05708c
+
+
+
+
+long long	time_difference(long long last_meal, long long current_time);
+void	print_message_fork(t_philo *philo, char *message);
+void	free_mallocs(t_table *table);
