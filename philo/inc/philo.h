@@ -24,22 +24,19 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 #define PARSING_ERROR "All arguments should be numbers above 0\n"
 
-
+#define DIED "died"
 #define FORK "has taken a fork"
-#define LEFT_FORK "has taken the left fork"
-#define RIGHT_FORK "has taken the right fork"
 #define EATING "is eating"
 #define SLEEPING "is sleeping"
 #define THINKING "is thinking"
-#define DIED "died"
+#define LEFT_FORK "has taken the left fork"
+#define RIGHT_FORK "has taken the right fork"
 
-
-typedef struct	s_fork
+typedef struct s_fork
 {
 	pthread_mutex_t	mutex;
 	int				fork_id;
 }				t_fork;
-
 
 typedef struct s_philo
 {
@@ -59,13 +56,11 @@ typedef struct s_philo
 typedef struct s_table
 {
 	pthread_mutex_t	write;
-	pthread_mutex_t	eating_mtx;
-	pthread_mutex_t	death_mtx;
+	pthread_mutex_t	table_mtx;
 	pthread_t		executioner;
 	t_philo			*philo;
 	t_fork			*fork;
 	int				full_philos;
-	int				all_full;
 	int				start;
 	int				current_time;
 	int				num_of_philos;
@@ -77,31 +72,23 @@ typedef struct s_table
 	int				death;
 }				t_table;
 
-
 //PARSING
-int		parsing(char **argv);
-int		ft_atoi(const char *str);
+int			parsing(char **argv);
+int			ft_atoi(const char *str);
 
 //DATA INIT
-int		data_init(t_table *table, char **argv);
-void	table_init(t_table *table, char **argv);
-void	philo_init(t_table *table);	
-
+int			data_init(t_table *table, char **argv);
+void		table_init(t_table *table, char **argv);
+void		philo_init(t_table *table);
 
 // UTILS
-void	print_message(t_philo *philo, char *message);
-int		get_time(void);
-
+long long	time_difference(long long last_meal, long long current_time);
+void		print_message(t_philo *philo, char *message);
+void		free_mallocs(t_table *table);
+int			get_time(void);
 
 // ROUTINE
-void	*eat_think_sleep(void *arg);
-void	*ft_think(t_philo *philo);
-void	*ft_sleep(t_philo *philo);
-void	*ft_eat(t_philo *philo);
-
-
-
-
-long long	time_difference(long long last_meal, long long current_time);
-void	print_message_fork(t_philo *philo, char *message);
-void	free_mallocs(t_table *table);
+void		*eat_think_sleep(void *arg);
+void		*ft_think(t_philo *philo);
+void		*ft_sleep(t_philo *philo);
+void		*ft_eat(t_philo *philo);

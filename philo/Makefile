@@ -13,10 +13,10 @@
 NAME 			= 		philo
 
 CC 				= 		gcc
-CFLAGS 			= 		-g3 -Wall -Wextra -Werror -fsanitize=thread #-fsanitize=address #-O3
+CFLAGS 			= 		-g3 -Wall -Wextra -Werror
 
 SRC_DIR			=		src
-SRCS			=		$(wildcard	src/*.c)
+SRCS			=		main.c parsing.c routine.c utils.c data_init.c
 
 OBJ_DIR			=		obj
 OBJS 			= 		$(addprefix obj/, $(notdir $(SRCS:%.c=%.o)))

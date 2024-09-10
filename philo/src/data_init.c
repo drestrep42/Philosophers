@@ -38,20 +38,17 @@ void	philo_init(t_table *table)
 
 void	table_init(t_table *table, char **argv)
 {
-    pthread_mutex_init(&table->write, NULL);
-	pthread_mutex_init(&table->eating_mtx, NULL);
-	pthread_mutex_init(&table->death_mtx, NULL);
-    table->death = 0;
-	table->all_full = 0;
+	pthread_mutex_init(&table->write, NULL);
+	pthread_mutex_init(&table->table_mtx, NULL);
+	table->death = 0;
 	table->full_philos = 0;
-    table->num_of_philos = ft_atoi(argv[1]);
-    table->time2die = ft_atoi(argv[2]);
-    table->time2eat = ft_atoi(argv[3]) * 1000;
-    table->time2sleep = ft_atoi(argv[4]) * 1000;
-    if (argv[5])
-        table->nbr_meals = ft_atoi(argv[5]);
+	table->num_of_philos = ft_atoi(argv[1]);
+	table->time2die = ft_atoi(argv[2]);
+	table->time2eat = ft_atoi(argv[3]) * 1000;
+	table->time2sleep = ft_atoi(argv[4]) * 1000;
+	if (argv[5])
+		table->nbr_meals = ft_atoi(argv[5]);
 }
-
 
 int	data_init(t_table *table, char **argv)
 {

@@ -31,6 +31,22 @@ int	ft_atoi(const char *str)
 	return ((int)res);
 }
 
+int	valid(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (i == 0 && (str[i] == '+' || str[i] == '-'))
+			i++;
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	parsing(char **argv)
 {
 	int	i;
@@ -40,6 +56,8 @@ int	parsing(char **argv)
 	while (argv && *argv)
 	{
 		if (ft_atoi(*argv) <= 0)
+			return (0);
+		if (!valid(*argv))
 			return (0);
 		argv++;
 		i++;
